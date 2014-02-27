@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Catch me if you can!</title>
+<title>Click me if you can!</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <script type="text/javascript">
-var n = 0;
+//Public declarations
+var timesClicked = 0;
+var x = 0;
+var y = 0;
+var frame = 0;
+var anim;
+var isFinished = true;//Makes animation go till the end if button is clicked/entered in the process
+
+//Makes one frame of animation of total 8
+function createPath(xx,yy){
+document.getElementById("button").style.left = xx+"px";
+document.getElementById("button").style.top = yy+"px";
+frame++;
+if (frame == 8) 
+  {
+    clearInterval(anim); 
+    isFinished = true; 
+  };
+}
 
 function changePosition(){
-var x = Math.random()*748+1;
-var y = Math.random()*447-20;
-document.getElementById("button").style.left = x+"px";
-document.getElementById("button").style.top = y+"px";
+var x0 = x;
+//Chooses random position not too close from previous one
+do{
+x = Math.random()*748+1;
+}
+while (Math.abs(x-x0)<50)
+var dx = (x - x0)/8;
+
+var y0 = y;
+do{
+y = Math.random()*447-20;
+}
+while (Math.abs(y-y0)<50)
+var dy = (y - y0)/8;
+
+//Animation initialisation
+frame = 0;
+isFinished = false;
+anim = setInterval(function() {createPath(x0+dx*(frame+1),y0+dy*(frame+1))}, 20);
 };
 
 window.onload = function(){
 button = document.getElementById("button");
+//Moving div as soon as mouse enters div
 button.onmouseover = function(){
-		changePosition();
+		if (isFinished) {
+		  changePosition();
+		}
 		};
+//Moving div and increasing counter if "button" is pressed
 document.getElementById("button").onclick=function(){
-		n++;
-		document.getElementById("info").innerHTML = n;
-		changePosition();
+		timesClicked++;
+		document.getElementById("info").innerHTML = timesClicked;
+		if (isFinished){
+      changePosition();
+		};
 		};
 };
 </script>
@@ -30,11 +69,13 @@ document.getElementById("button").onclick=function(){
 
 <h2 align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top:15px; margin-bottom:15px; padding:0px">The Great Clicking Game</h2>
 
+<!--Main div, that makes visual border-->
 <div style="border: 1px solid rgb(0, 0, 0); width: 800px; height: 500px; margin:0px; padding:0px; margin-left: auto; margin-right: auto;
 /*User cannot select text BEGIN*/
 -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
 /* END */">
 
+<!--Button styled div that we need to click. Doesn't change cursor style, doesn't have any link.-->
 <div style="margin: 0px; height: 50px; width: 50px; background-color: rgb(0, 0, 102); text-align: center; cursor:default; position: relative; border-radius:5px; left: 1px; top: -20px;"
  id="button">
 
@@ -42,7 +83,9 @@ document.getElementById("button").onclick=function(){
 Click me!</h4>
 
 </div>
+<!--Button END-->
 </div>
+<!--Frame div END-->
 
 <div align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top: 10px">
 <strong>Times clicked so far: <div id="info" style="display:inline">0</div></strong>
