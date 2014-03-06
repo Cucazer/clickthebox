@@ -11,18 +11,25 @@ var y = 0;
 var frame = 0;
 var anim;
 var isFinished = true;//Makes animation go till the end if button is clicked/entered in the process
+var frameCount = 8;
 
 //Makes one frame of animation of total 8
 function createPath(xx,yy){
 document.getElementById("button").style.left = xx+"px";
 document.getElementById("button").style.top = yy+"px";
 frame++;
-if (frame == 8) 
+if (frame == frameCount) 
   {
     clearInterval(anim); 
     isFinished = true; 
   };
 }
+
+function startGame(difficulty){
+  frameCount = difficulty;
+  document.getElementById("difficultyMenu").style.display = "none";
+  document.getElementById("button").style.display = "block";
+};
 
 function changePosition(){
 var x0 = x;
@@ -31,14 +38,14 @@ do{
 x = Math.random()*748+1;
 }
 while (Math.abs(x-x0)<50)
-var dx = (x - x0)/8;
+var dx = (x - x0) / frameCount;
 
 var y0 = y;
 do{
-y = Math.random()*447-20;
+y = Math.random()*447+1;
 }
 while (Math.abs(y-y0)<50)
-var dy = (y - y0)/8;
+var dy = (y - y0) / frameCount;
 
 //Animation initialisation
 frame = 0;
@@ -47,48 +54,86 @@ anim = setInterval(function() {createPath(x0+dx*(frame+1),y0+dy*(frame+1))}, 20)
 };
 
 window.onload = function(){
-button = document.getElementById("button");
+var button = document.getElementById("button");
 //Moving div as soon as mouse enters div
+document.getElementById("easy").onclick = function(){startGame(20)};
+document.getElementById("medium").onclick = function(){startGame(16)};
+document.getElementById("hard").onclick = function(){startGame(12)};
 button.onmouseover = function(){
 		if (isFinished) {
 		  changePosition();
-		}
+		  }
 		};
 //Moving div and increasing counter if "button" is pressed
-document.getElementById("button").onclick=function(){
+button.onclick=function(){
 		timesClicked++;
 		document.getElementById("info").innerHTML = timesClicked;
 		if (isFinished){
       changePosition();
-		};
+	   	};
 		};
 };
 </script>
 </head>
-<body style="background:#FFFDBB">
+<body style="background:#E0E0A5">
 
 <h2 align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top:15px; margin-bottom:15px; padding:0px">The Great Clicking Game</h2>
 
-<!--Main div, that makes visual border-->
-<div style="border: 1px solid rgb(0, 0, 0); width: 800px; height: 500px; margin:0px; padding:0px; margin-left: auto; margin-right: auto;
+<!--Frame div, that makes visual border-->
+<div style="border: 5px dashed #E0E0A5; width: 800px; height: 500px; margin:0px; padding:0px; margin-left: auto; margin-right: auto; background-color:#FFFDBB;
 /*User cannot select text BEGIN*/
 -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
 /* END */">
 
 <!--Button styled div that we need to click. Doesn't change cursor style, doesn't have any link.-->
-<div style="margin: 0px; height: 50px; width: 50px; background-color: rgb(0, 0, 102); text-align: center; cursor:default; position: relative; border-radius:5px; left: 1px; top: -20px;"
- id="button">
+<div style="margin: 0px; height: 50px; width: 50px; background-color: rgb(0, 0, 102); text-align: center; cursor:default; position: relative;
+border-radius:5px; left: 1px; top: 1px; display: none;" id="button">
 
-<h4 style="vertical-align: middle; font-family: Comic Sans MS,Verdana; color: rgb(255, 255, 255);">
-Click me!</h4>
+  <p style="vertical-align: middle; font-family: Comic Sans MS,Verdana; color: rgb(255, 255, 255); font-weight:bold;
+  margin: 0px; padding:0px"> 
+    Click me!
+  </p>
 
 </div>
 <!--Button END-->
+
+<!--Menu with difficulty choice - different frame count in the animation-->
+<div style="height:100px; width:274px; top:200px; left:262px; position:relative; background-color:#D3D29B; font-weight:bold; cursor: default; 
+font-size: 18px; border:5px dashed #FFFDBB"
+id="difficultyMenu">
+
+  <p style="font-family:Geneva, Arial, Helvetica, sans-serif; padding-top:10px; text-align:center; margin-bottom:10px; margin-top:0px; font-size:19px">
+    Select difficulty level!
+  </p>
+
+  <div style="border-radius:5px; background-color:green; cursor:pointer; float:left; height:40px; width:80px; margin:3px; margin-left:11px" id="easy">
+    <p style="padding-top:8px; text-align:center; font-family: Geneva, Arial, Helvetica, sans-serif; color: rgb(255, 255, 255); margin:0px;">
+      Easy
+    </p>
+  </div>
+
+  <div style="border-radius:5px; background-color:blue; cursor:pointer; float:left; height:40px; width:80px; margin:3px" id="medium">
+   <p style="padding-top:8px; text-align:center; font-family: Geneva, Arial, Helvetica, sans-serif; color: rgb(255, 255, 255); margin:0px;">
+      Medium
+    </p>
+  </div>
+
+  <div style="border-radius:5px; background-color:red; cursor:pointer; float:left; height:40px; width:80px; margin:3px" id="hard">
+    <p style="padding-top:8px; text-align:center; font-family: Geneva, Arial, Helvetica, sans-serif; color: rgb(255, 255, 255); margin:0px;">
+      Hard
+    </p>
+  </div>
+
+</div>
+<!--Difficulty menu END-->
+
 </div>
 <!--Frame div END-->
 
-<div align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top: 10px">
-<strong>Times clicked so far: <div id="info" style="display:inline">0</div></strong>
+<!--Counter-->
+<div align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top: 10px; font-weight:bold">
+  Times clicked so far: <div id="info" style="display:inline">0</div>
 </div>	
+
 </body>
 </html>
