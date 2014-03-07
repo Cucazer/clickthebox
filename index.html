@@ -6,14 +6,15 @@
 <script type="text/javascript">
 //Public declarations
 var timesClicked = 0;
-var x = 0;
-var y = 0;
+var x = 375;
+var y = 225;
 var frame = 0;
 var anim;
 var isFinished = true;//Makes animation go till the end if button is clicked/entered in the process
-var frameCount = 8;
+var frameCount = 16;
+var clicked = false;//Adds ability to perform the first click
 
-//Makes one frame of animation of total 8
+//Makes one frame of animation
 function createPath(xx,yy){
 document.getElementById("button").style.left = xx+"px";
 document.getElementById("button").style.top = yy+"px";
@@ -29,36 +30,40 @@ function startGame(difficulty){
   frameCount = difficulty;
   document.getElementById("difficultyMenu").style.display = "none";
   document.getElementById("button").style.display = "block";
+  clicked = false;
 };
 
 function changePosition(){
-var x0 = x;
-//Chooses random position not too close from previous one
-do{
-x = Math.random()*748+1;
-}
-while (Math.abs(x-x0)<50)
-var dx = (x - x0) / frameCount;
+if (clicked) {
+  var x0 = x;
+  //Chooses random position not too close from previous one
+  do{
+    x = Math.random()*748+1;
+  }
+  while (Math.abs(x-x0)<50)
+  var dx = (x - x0) / frameCount;
 
-var y0 = y;
-do{
-y = Math.random()*447+1;
-}
-while (Math.abs(y-y0)<50)
-var dy = (y - y0) / frameCount;
+  var y0 = y;
+  do{
+    y = Math.random()*447+1;
+  }
+  while (Math.abs(y-y0)<50)
+  var dy = (y - y0) / frameCount;
 
-//Animation initialisation
-frame = 0;
-isFinished = false;
-anim = setInterval(function() {createPath(x0+dx*(frame+1),y0+dy*(frame+1))}, 20);
+  //Animation initialisation
+  frame = 0;
+  isFinished = false;
+  anim = setInterval(function() {createPath(x0+dx*(frame+1),y0+dy*(frame+1))}, 20);
+};
 };
 
 window.onload = function(){
 var button = document.getElementById("button");
-//Moving div as soon as mouse enters div
+//Assigning difficulties
 document.getElementById("easy").onclick = function(){startGame(20)};
 document.getElementById("medium").onclick = function(){startGame(16)};
 document.getElementById("hard").onclick = function(){startGame(12)};
+//Moving div as soon as mouse enters div
 button.onmouseover = function(){
 		if (isFinished) {
 		  changePosition();
@@ -68,6 +73,7 @@ button.onmouseover = function(){
 button.onclick=function(){
 		timesClicked++;
 		document.getElementById("info").innerHTML = timesClicked;
+		clicked = true;
 		if (isFinished){
       changePosition();
 	   	};
@@ -87,7 +93,7 @@ button.onclick=function(){
 
 <!--Button styled div that we need to click. Doesn't change cursor style, doesn't have any link.-->
 <div style="margin: 0px; height: 50px; width: 50px; background-color: rgb(0, 0, 102); text-align: center; cursor:default; position: relative;
-border-radius:5px; left: 1px; top: 1px; display: none;" id="button">
+border-radius:5px; left: 375px; top: 225px; display: none;" id="button">
 
   <p style="vertical-align: middle; font-family: Comic Sans MS,Verdana; color: rgb(255, 255, 255); font-weight:bold;
   margin: 0px; padding:0px"> 
