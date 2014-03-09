@@ -30,8 +30,23 @@ function startGame(difficulty){
   frameCount = difficulty;
   document.getElementById("difficultyMenu").style.display = "none";
   document.getElementById("button").style.display = "block";
+  document.getElementById("restart").style.display = "block";
+  document.getElementById("button").style.left = "375px";
+  document.getElementById("button").style.top = "225px";
   clicked = false;
 };
+
+function restartGame(){
+  document.getElementById("difficultyMenu").style.display = "block";
+  document.getElementById("button").style.display = "none";
+  document.getElementById("restart").style.display = "none";
+  x = 375;
+  y = 225;
+  timesClicked = 0;
+  document.getElementById("info").innerHTML = timesClicked;
+  isFinished = true;
+  frameCount = 16;
+}
 
 function changePosition(){
 if (clicked) {
@@ -47,7 +62,7 @@ if (clicked) {
   do{
     y = Math.random()*447+1;
   }
-  while (Math.abs(y-y0)<50)
+  while (Math.abs(y-y0)<50 && (x>700 && y<20))
   var dy = (y - y0) / frameCount;
 
   //Animation initialisation
@@ -59,6 +74,8 @@ if (clicked) {
 
 window.onload = function(){
 var button = document.getElementById("button");
+//Adding restart button
+document.getElementById("restart").onclick = function(){restartGame()};
 //Assigning difficulties
 document.getElementById("easy").onclick = function(){startGame(20)};
 document.getElementById("medium").onclick = function(){startGame(16)};
@@ -90,6 +107,11 @@ button.onclick=function(){
 /*User cannot select text BEGIN*/
 -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
 /* END */">
+
+<div id="restart" style="float:right; font-weight:bold; cursor:pointer; margin-right:5px; position:relative; font-size:13px; display:none">
+  Restart
+</div>
+
 
 <!--Button styled div that we need to click. Doesn't change cursor style, doesn't have any link.-->
 <div style="margin: 0px; height: 50px; width: 50px; background-color: rgb(0, 0, 102); text-align: center; cursor:default; position: relative;

@@ -1,3 +1,7 @@
+Version 1.3.1
+----------
+- Added restart button
+
 Version 1.3
 ----------
 - Added ability to perform the first click
