@@ -3,28 +3,15 @@
 <head>
 <title>Click me if you can!</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 //Public declarations
 var timesClicked = 0;
 var x = 375;
 var y = 225;
-var frame = 0;
-var anim;
 var isFinished = true;//Makes animation go till the end if button is clicked/entered in the process
-var frameCount = 16;
-var clicked = false;//Adds ability to perform the first click
-
-//Makes one frame of animation
-function createPath(xx,yy){
-document.getElementById("button").style.left = xx+"px";
-document.getElementById("button").style.top = yy+"px";
-frame++;
-if (frame == frameCount) 
-  {
-    clearInterval(anim); 
-    isFinished = true; 
-  };
-}
+var frameCount = 16;  //Initially is named in offline version, don't wanna change
+var clicked = false;  //Adds ability to perform the first click
 
 function startGame(difficulty){
   frameCount = difficulty;
@@ -56,19 +43,23 @@ if (clicked) {
     x = Math.random()*748+1;
   }
   while (Math.abs(x-x0)<50)
-  var dx = (x - x0) / frameCount;
 
   var y0 = y;
   do{
     y = Math.random()*447+1;
   }
   while (Math.abs(y-y0)<50 && (x>700 && y<20))
-  var dy = (y - y0) / frameCount;
 
-  //Animation initialisation
-  frame = 0;
-  isFinished = false;
-  anim = setInterval(function() {createPath(x0+dx*(frame+1),y0+dy*(frame+1))}, 20);
+  //Animation
+  if (isFinished) {
+      isFinished = false;
+    $("#button").animate({
+      left: x,
+      top: y
+  },frameCount*20, function() {
+      isFinished = true;
+    });
+  }
 };
 };
 
@@ -118,7 +109,7 @@ button.onclick=function(){
 border-radius:5px; left: 375px; top: 225px; display: none;" id="button">
 
   <p style="vertical-align: middle; font-family: Comic Sans MS,Verdana; color: rgb(255, 255, 255); font-weight:bold;
-  margin: 0px; padding:0px"> 
+  margin: 0px; padding:0px">
     Click me!
   </p>
 
@@ -126,7 +117,7 @@ border-radius:5px; left: 375px; top: 225px; display: none;" id="button">
 <!--Button END-->
 
 <!--Menu with difficulty choice - different frame count in the animation-->
-<div style="height:100px; width:274px; top:200px; left:262px; position:relative; background-color:#D3D29B; font-weight:bold; cursor: default; 
+<div style="height:100px; width:274px; top:200px; left:262px; position:relative; background-color:#D3D29B; font-weight:bold; cursor: default;
 font-size: 18px; border:5px dashed #FFFDBB"
 id="difficultyMenu">
 
@@ -161,7 +152,7 @@ id="difficultyMenu">
 <!--Counter-->
 <div align="center" style="font-family:Geneva, Arial, Helvetica, sans-serif; margin-top: 10px; font-weight:bold">
   Times clicked so far: <div id="info" style="display:inline">0</div>
-</div>	
+</div>
 
 </body>
 </html>
